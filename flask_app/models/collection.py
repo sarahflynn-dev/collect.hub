@@ -8,7 +8,7 @@ class Collection:
         self.id = db_data['id']
         self.title = db_data['title']
         self.date_start = db_data['date_start']
-        self.thumb = db_data['thumb']
+        self.thumbnail =  db_data['thumbnail']
         self.description = db_data['description']
         self.size = db_data['size']
         self.unit = db_data['unit']
@@ -61,20 +61,22 @@ class Collection:
                 "id": result['users.id'],
                 "first_name": result['first_name'],
                 "last_name": result['last_name'],
+                "dob": result['dob'],
                 "email": result['email'],
+                "username": result['username'],
                 "password": "",
                 "created_at": result['users.created_at'],
                 "updated_at": result['users.updated_at']
         }
-        current_collection.creator = user.User(user_data)
+        current_collection.creator = User(user_data)
         return current_collection
     @classmethod
     def store(cls, form_data):
         query = """
-                INSERT INTO collections (title,date_start,thumb,description,size,unit,safety,user_id)
+                INSERT INTO collections (title,date_start,thumbnail,description,size,unit,safety,user_id)
                 VALUES (%(title)s,
                 %(date_start)s,
-                %(thumb)s,
+                %(thumbnail)s,
                 %(description)s,
                 %(size)s,
                 %(unit)s,
@@ -88,7 +90,7 @@ class Collection:
                 UPDATE collections
                 SET title = %(title)s,
                 date_start = %(date_start)s,
-                thumb = %(thumb)s,
+                thumbnail = %(thumbnail)s,
                 description = %(description)s,
                 size = %(size)s,
                 unit = %(unit)s,
@@ -104,16 +106,15 @@ class Collection:
                 """
         return connectToMySQL(db).query_db(query,data)
     @staticmethod
-    def validate_collection(form_data):
+    def validate_collection(form_data, file):
         is_valid = True
-
         if len(form_data['title']) < 3:
             flash("Please provide a valid collection title.")
             is_valid = False
         if form_data['date_start'] == '':
             flash("Please provide a date.")
             is_valid = False
-        if form_data['thumb'] == '':
+        if file['thumbnail'] == '':
             flash("Please upload a thumbnail.")
             is_valid = False
         if len(form_data['description']) < 3:
@@ -127,6 +128,5 @@ class Collection:
             is_valid = False
         if form_data['safety'] == '':
             flash("Please provide an input.")
-            is_valid = False
-            
+            is_valid = False  
         return is_valid

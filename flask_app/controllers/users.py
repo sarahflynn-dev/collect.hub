@@ -14,9 +14,17 @@ def index():
 def manage():
     return render_template('bookmarks.html')
 
+# @app.route('/browse')
+# def browse():
+#     if 'user_id' in session:
+#         return render_template('browse.html')
+#     return redirect('/login')
+
 @app.route('/new/collection')
 def new_collection():
-    return render_template('new_collect.html')
+    if 'user_id' in session:
+        return render_template('new_collect.html')
+    return redirect('/login')
 
 @app.route('/login')
 def login():
@@ -50,6 +58,6 @@ def register_success():
 
 @app.route('/logout')
 def logout():
-    if 'user_id' in session:
-        session.pop('user_id')
-    return redirect('/login')
+    session.clear()
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!', session)
+    return redirect('/')

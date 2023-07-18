@@ -61,81 +61,83 @@
         {% endwith %}
     </div>
 
-    <!-- New Entry -->
-            <div class="container mx-auto w-auto d-flex justify-content-center align-items-center">
-                <form class="form-control p-5 bg-dark text-light border-secondary" action="/new/collection/process" method="POST">
-                    <input type="hidden" name="action" value="login">
-                    <div class="d-flex justify-content-evenly">
-                        <div>
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" class="form-control bg-dark-subtle" name="title" id="title"
-                                    placeholder="Name your collection">
-                            </div>
-                            <div class="form-group my-2">
-                                <label for="date_start">Date Started:</label>
-                                <input type="date" class="form-control bg-dark-subtle w-auto" name="date_start" id="date_start"
-                                placeholder="">
-                            </div>
-                            <div class="form-group my-2">
-                                <label for="thumb">Thumbnail:</label>
-                                <input type="file" onchange="readURL(this);" class="form-control bg-dark-subtle" name="thumb" id="thumb">
-                                <script>
-                                    function readURL(input) {
-                                        if (input.files && input.files[0]) {
-                                            var reader = new FileReader();
-                                            reader.onload = function (e) {
-                                                $('#preview')
-                                                .attr('src', e.target.result)
-                                                .width(200)
-                                                .height(200);
-                                            };
-                                            reader.readAsDataURL(input.files[0]);
-                                        }
-                                    }
-                                </script>
-                                <img id="preview" class="mt-2" src="#" alt="" />
-                            </div>
+    <!-- Edit Entry -->
+    <div class="container mx-auto w-auto d-flex justify-content-center align-items-center">
+        <form class="form-control p-5 bg-dark text-light border-secondary" action="/edit/process/{{collection.id}}" enctype="multipart/form-data" method="POST">
+            <input type="hidden" name="action" value="login">
+            <div class="d-flex justify-content-evenly">
+                <div>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control bg-dark-subtle" name="title" id="title" value="{{collection.title}}">
+                    </div>
+                    <div class="form-group my-2">
+                        <label for="date_start">Date Started:</label>
+                        <input type="date" class="form-control bg-dark-subtle w-auto" name="date_start" id="date_start"
+                            value="{{collection.date_start}}">
+                    </div>
+                    <div class="form-group my-2">
+                        <label for="thumbnail">Thumbnail:</label>
+                        <input type="file" onchange="readURL(this);" class="form-control bg-dark-subtle" name="thumbnail" value=""
+                            id="thumbnail">
+                        <script>
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200)
+                                            .height(200);
+                                    };
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                        <img id="preview" class="mt-2" src="#" alt="" />
+                    </div>
 
-                            <div class="form-group">
-                                <label for="description">Description:</label>
-                                <textarea rows="4" cols="10" class="form-control bg-dark-subtle" name="description" id="description"
-                                    placeholder="Describe your collection."></textarea>
-                            </div>
-                            
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label for="unit">Collection Size:</label>
-                                <input type="number" class="form-control bg-dark-subtle w-auto" name="size" id="unit"
-                                    placeholder="1">
-                            </div>
-                            <div class="form-group d-flex my-4">
-                                <label for="email">Unit Type:</label>
-                                <select class="form-select w-auto mx-3" id="unit" name="unit">
-                                    <option value="Unit(s)">Unit(s)</option>
-                                    <option value="Pound(s)">Pound(s)</option>
-                                    <option value="Meter(s)">Meter(s)</option>
-                                    <option value="Series">Series</option>
-                                    <option value="Case(s)">Case(s)</option>
-                                    <option value="Individual(s)">Individual(s)</option>
-                                  </select>
-                            </div>
-                            <div class="mt-2 me-0">
-                                <label for="safety">
-                                    Family Friendly?
-                                </label>
-                                <div class="d-flex">
-                                    <input type="radio" class="me-2" id="safety" name="safety" value="Yes">
-                                    <label for="safety" class="me-4">Yes</label><br>
-                                    <input type="radio" class="mx-2" id="safety" name="safety" value="No">
-                                    <label for="safety">No</label><br>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea rows="4" cols="10" class="form-control bg-dark-subtle" name="description"
+                            id="description">{{collection.description}}</textarea>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="unit">Collection Size:</label>
+                        <input type="number" class="form-control bg-dark-subtle w-auto" name="size" id="unit"
+                            value="{{collection.size}}">
+                    </div>
+                    <div class="form-group d-flex my-4">
+                        <label for="email">Unit Type:</label>
+                        <select class="form-select w-auto mx-3" id="unit" name="unit" value="{{collection.unit}}">
+                            <option value="Unit(s)">Unit(s)</option>
+                            <option value="Pound(s)">Pound(s)</option>
+                            <option value="Meter(s)">Meter(s)</option>
+                            <option value="Series">Series</option>
+                            <option value="Case(s)">Case(s)</option>
+                            <option value="Individual(s)">Individual(s)</option>
+                        </select>
+                    </div>
+                    <div class="mt-2 me-0">
+                        <label for="safety">
+                            Family Friendly?
+                        </label>
+                        <div class="d-flex">
+                            <input type="radio" class="me-2" id="safety" name="safety" value="Yes">
+                            <label for="safety" class="me-4">Yes</label><br>
+                            <input type="radio" class="mx-2" id="safety" name="safety" value="No" checked="checked">
+                            <label for="safety">No</label><br>
                         </div>
                     </div>
-                <div class="d-flex mx-auto pt-4 justify-content-center align-items-center">
-                    <button type="submit" class="btn btn-lg fw-bolder btn-outline-success border-1 mt-3">Create Collection</button>
                 </div>
-                </form>
             </div>
+            <div class="d-flex mx-auto pt-4 justify-content-center align-items-center">
+                <button type="submit" class="btn btn-lg fw-bolder btn-outline-success border-1 mt-3">Update
+                    Collection</button>
+                <a href="/dashboard" class="btn btn-lg fw-bolder btn-outline-secondary border-1 mt-3 mx-3">Back</a>
+            </div>
+        </form>
+    </div>

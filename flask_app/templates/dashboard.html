@@ -20,7 +20,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/browse" class="nav-link px-2 text-white">Browse</a></li>
                     <li><a href="/new/collection" class="nav-link px-2 text-white">Upload</a></li>
-                    <li><a href="/dashboard" class="nav-link px-2 text-secondary disabled">My Collections</a></li>
+                    <li><a href="/dashboard" class="nav-link px-2 text-secondary disabled">Dashboard</a></li>
                     <li><a href="/logout" class="nav-link px-2 text-white">Log Out</a></li>
                 </ul>
             </div>
@@ -45,7 +45,7 @@
     <!-- header, hrule, and subtitle-->
     <div class="my-3 container gx-0 text-light d-flex justify-content-between">
         <h1>Your HUB</h1>
-        <h1>{{user.first_name}}'s Collections</h1>
+        <h1>{{user.username}}'s Collections</h1>
     </div>
     <div class="container d-flex gx-0 justify-content-center align-items-center my-3">
         <hr class="w-100" style="border: solid white 1px; padding: 0px; margin: 0px;">
@@ -62,43 +62,32 @@
         </div>
     </div>
 
-
-
     <div class="mx-auto border m-5 p-5 d-flex text-center border-white overflow-auto w-75 text-light justify-content-evenly">
-        <div class="row">
-            <div class="col">col</div>
-            <div class="col">col</div>
-            <div class="w-100"></div>
-            <div class="col">col</div>
-            <div class="col">col</div>
-          </div>
         
-        <!-- invisible table with collection boxes -->
-        <table>
-            <tbody>
+        <!-- grid? with collection boxes -->
             {% for collection in collections %}
-            <tr>
-                <td>
+            {% if collection.user_id == session.user_id %}
                     <!-- individual entry -->
-                    <div style="width:300px;vertical-align: center;">
-                        <div class="bg-success" style="height:300px;width:300px;">
+                    <div class="mx-3" style="width:300px;vertical-align: center;">
+                        <div class="bg-secondary" style="height:300px;width:300px;">
+                            {{collection.thumbnail}}
                         </div>
                         <div class="d-flex justify-content-between my-2">
                             <div>
-                                <a href="/dashboard" class="link-light h4">{{collections.title}}</a>
+                                <a href="/view/{{collection.id}}" class="link-light">{{collection.title}}</a>
                             </div>
+                            {% if collection.user_id == session.user_id %}
                             <div>
-                                <a href="/edit/{{collections.id}}"><button type="submit" class="btn btn-sm fw-bolder btn-outline-success border-1 mx-1">Edit</button></a>
-                                <a href="/destroy/{{collections.id}}"><button type="submit"
+                                <a href="/edit/{{collection.id}}"><button type="submit" class="btn btn-sm fw-bolder btn-outline-success border-1 mx-1">Edit</button></a>
+                                <a href="/destroy/{{collection.id}}"><button type="submit" onclick="alert('Are you sure you want to delete your collection?')"
                                     class="btn btn-sm fw-bolder btn-outline-light border-1" style="border-color:#c05746; color:#c05746;">Delete</button></a>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
-                </td>
-            </tr>
-            {% endfor %g
-        </tbody>
-    </table>
+            {% endif %}
+            {% endfor %}
+    </div>
 
     <!-- MAKE NEW Collection Box -->
 <!--
