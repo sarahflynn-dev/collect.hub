@@ -1,0 +1,3 @@
+implement image upload using flask/python guide provided by Jon
+
+likes/bookmarks requires many-to-many relationship in db
